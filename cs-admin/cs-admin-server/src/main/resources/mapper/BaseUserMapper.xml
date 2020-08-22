@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cs.springcloud.admin.server.mapper.BaseUserMapper">
+
+    <resultMap type="com.cs.springcloud.admin.api.model.BaseUser" id="baseUserMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="userSex" column="user_sex"/>
+        <result property="portrait" column="portrait"/>
+        <result property="birthday" column="birthday"/>
+        <result property="address" column="address"/>
+        <result property="mobilePhone" column="mobile_phone"/>
+        <result property="telPhone" column="tel_phone"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="description" column="description"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="isDisabled" column="is_disabled"/>
+        <result property="isSuperAdmin" column="is_super_admin"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+    </resultMap>
+
+    <select id="selectDeptUsersByDeptCode" resultMap="baseUserMap">
+        SELECT
+            bu.id,
+            bu.username,
+            bu.user_name,
+            bu.mobile_phone
+        FROM
+            base_dept_user bdu
+            LEFT JOIN base_user bu ON bu.id = bdu.user_id
+        WHERE
+            bu.is_deleted = 0
+            AND bdu.dept_code = #{deptCode}
+    </select>
+    <!-- 排除指定部门的用户列表 -->
+    <select id="selectUsersExcludeDept" resultMap="baseUserMap">
+        SELECT
+            bu.id,
+            bu.username,
+            bu.user_name,
+            bu.mobile_phone
+        FROM
+         base_user bu
+        WHERE
+         bu.is_super_admin = 0
+        AND bu.is_deleted = 0
+        AND bu.id NOT IN (
+            SELECT
+                user_id
+            FROM
+                base_dept_user
+            WHERE
+                dept_code = #{excludeDeptCode}
+        )
+    </select>
+</mapper>

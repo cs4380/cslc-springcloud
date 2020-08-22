@@ -1,0 +1,46 @@
+server:
+  port: 4380
+
+spring:
+  application:
+    name: cs-gateway
+  cloud:
+    nacos:
+      # 动态配置
+      config:
+        # 配置为yaml时，必须添加此项配置
+        file-extension: yaml
+        # 配置中心地址
+        server-addr: localhost:8761
+      discovery:
+        # 注册中心地址
+        server-addr: localhost:8761
+        # 注册服务标识
+        service: cs-gateway
+        # ip: localhost
+    gateway:
+      discovery:
+        locator:
+          # 开启自动根据注册中心的serviceId列表创建路由的功能
+          enabled: true
+          # 服务名采用小写，默认为大写
+          lowerCaseServiceId: true
+      routes:
+        - id: cs-auth
+          uri: lb://cs-auth
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=2
+        - id: cs-admin
+          uri: lb://cs-admin
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - StripPrefix=2
+  management:
+  # 端点检查（健康检查）
+  endpoints:
+    web:
+      exposure:
+        include: "*"

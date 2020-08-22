@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cs.springcloud.admin.server.mapper.SysRoleAuthorizationMapper">
+
+    <resultMap type="com.cs.springcloud.admin.api.model.SysRoleAuthorization" id="sysRoleAuthorizationMap">
+        <result property="id" column="id"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="menuCode" column="menu_code"/>
+        <result property="resourceType" column="resource_type"/>
+        <result property="tenantId" column="tenant_id"/>
+    </resultMap>
+
+    <select id="selectRoleAuthByRoleCodes" resultMap="sysRoleAuthorizationMap">
+        SELECT
+        resource_id,
+        resource_type
+        FROM
+        sys_role_authorization
+        <where>
+            <if test="roleCodeList != null and roleCodeList.size > 0">
+                role_code IN
+                <foreach collection="roleCodeList" item="roleCode" open="(" close=")" separator=",">
+                    #{roleCode}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY
+        resource_id,
+        resource_type
+    </select>
+    <!-- 获取角色的菜单权限，排除为目录的数据（前端树状使用） -->
+    <select id="selectMenuAuthByRoleCode" resultType="java.lang.String">
+        SELECT
+            sra.resource_id
+        FROM
+            sys_role_authorization sra
+            LEFT JOIN sys_menu sm ON sra.resource_id = sm.id
+        WHERE
+            sra.role_code = #{roleCode}
+            AND sra.resource_type = 0
+            AND sm.is_deleted = 0
+            AND sm.menu_type = 1
+    </select>
+
+    <select id="selectRoleMenus" resultType="com.cs.springcloud.admin.api.dto.RoleMenuAuthDTO">
+        SELECT
+            sra.role_code roleCode,
+            smb.url,
+            smb.method
+        FROM
+            sys_role_authorization sra
+            LEFT JOIN sys_menu_button smb ON sra.resource_id = smb.id
+        WHERE
+            sra.resource_type = 1
+            AND smb.is_deleted = 0
+    </select>
+</mapper>

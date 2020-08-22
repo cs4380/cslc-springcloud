@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.1.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.cs.springcloud</groupId>
+    <artifactId>cs-springcloud</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+
+    <name>cslc-springcloud</name>
+    <description>cslc-springcloud</description>
+
+    <modules>
+        <module>cs-base</module>
+        <module>cs-admin</module>
+        <module>cs-auth</module>
+        <module>cs-gateway</module>
+        <module>cs-generator</module>
+    </modules>
+
+    <!-- 统一版本号管理 -->
+    <properties>
+        <spring.cloud.version>Hoxton.RELEASE</spring.cloud.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java.version>11</java.version>
+        <jwt.version>3.9.0</jwt.version>
+        <gson.version>2.8.5</gson.version>
+
+        <commons-lang3.version>3.9</commons-lang3.version>
+
+        <lombok.version>1.18.10</lombok.version>
+        <swagger.version>2.0.4</swagger.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+
+        <redis.version>2.2.2.RELEASE</redis.version>
+
+        <!-- 数据库相关依赖 -->
+        <druid.version>1.1.21</druid.version>
+        <mysql-connector-java.version>8.0.13</mysql-connector-java.version>
+
+        <mybatis.version>3.5.3</mybatis.version>
+        <mybatis-plus.version>3.3.0</mybatis-plus.version>
+        <!-- 翻页插件 -->
+        <pagehelper.version>1.2.13</pagehelper.version>
+
+
+        <!-- Spring Cloud 依赖版本 -->
+        <spring-cloud.version>2.2.0.RELEASE</spring-cloud.version>
+        <!-- 阿里cloud统一依赖 -->
+        <alibaba-cloud.version>2.2.0.RELEASE</alibaba-cloud.version>
+
+        <!-- nacos 版本控制-->
+        <nacos.version>0.9.0.RELEASE</nacos.version>
+        <nacos-discovery.version>${nacos.version}</nacos-discovery.version>
+        <nacos-config.version>${nacos.version}</nacos-config.version>
+
+        <!-- 分布式事务 -->
+        <seata.version>1.2.0</seata.version>
+
+        <!-- 项目依赖版本 -->
+        <cs-springcloud.version>0.0.1-SNAPSHOT</cs-springcloud.version>
+    </properties>
+
+    <!-- 通用依赖版本控制-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.cs.springcloud</groupId>
+                <artifactId>cs-base-core</artifactId>
+                <version>${cs-springcloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cs.springcloud</groupId>
+                <artifactId>cs-base-common</artifactId>
+                <version>${cs-springcloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cs.springcloud</groupId>
+                <artifactId>cs-admin-api</artifactId>
+                <version>${cs-springcloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cs.springcloud</groupId>
+                <artifactId>cs-auth-client</artifactId>
+                <version>${cs-springcloud.version}</version>
+            </dependency>
+            <!-- Spring Cloud 依赖版本 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- 阿里cloud依赖，统一版本控制 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- nacos 注册中心-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                <version>${nacos-discovery.version}</version>
+            </dependency>
+            <!-- nacos 配置中心-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <version>${nacos-config.version}</version>
+            </dependency>
+            <!-- 对象、字符等常用插件-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <!-- jwt操作插件 -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <!-- json操作插件 -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <!-- mybatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <!-- mybatis-plus 通用mapper插件-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- pagehelper-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+            <!-- swagger API可视化插件 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-dependencies</artifactId>
+                <version>${swagger.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- mysql连接驱动-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
+            <!-- druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- redis -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${redis.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

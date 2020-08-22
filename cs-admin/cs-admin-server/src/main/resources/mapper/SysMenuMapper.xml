@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cs.springcloud.admin.server.mapper.SysMenuMapper">
+
+    <resultMap type="com.cs.springcloud.admin.api.model.SysMenu" id="sysMenuMap">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="menuType" column="menu_type"/>
+        <result property="menuCode" column="menu_code"/>
+        <result property="menuTitle" column="menu_title"/>
+        <result property="menuIcon" column="menu_icon"/>
+        <result property="menuPath" column="menu_path"/>
+        <result property="hidden" column="hidden"/>
+        <result property="component" column="component"/>
+        <result property="redirect" column="redirect"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="description" column="description"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+    </resultMap>
+
+    <select id="selectMenuListByMenuIds" resultMap="sysMenuMap">
+        SELECT
+        id,
+        parent_id,
+        menu_type,
+        menu_code,
+        menu_title,
+        menu_icon,
+        menu_path,
+        redirect,
+        component,
+        hidden
+        FROM
+        sys_menu
+        <where>
+            is_deleted = 0
+            <if test="menuIds != null and menuIds.size > 0">
+                AND id IN
+                <foreach collection="menuIds" item="menuId" open="(" close=")" separator=",">
+                    #{menuId}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY
+        order_num
+    </select>
+</mapper>

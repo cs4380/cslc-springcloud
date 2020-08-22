@@ -1,0 +1,56 @@
+import request from '@/utils/request'
+
+/**
+ * 查询列表
+ * @param {*} query 查询条件
+ */
+export function ${secondModuleName}List(query) {
+    return request({
+        url: '/${secondModuleName}s',
+        method: 'get',
+        params: query
+    })
+}
+/**
+ * 添加新实体
+ * @param {*} obj 实体信息
+ */
+export function add${pojoName}(obj) {
+    return request({
+        url: '/${secondModuleName}s',
+        method: 'post',
+        data: obj
+    })
+}
+/**
+ * 通过主键获取实体详情
+ * @param {*} id 主键
+ */
+export function get${pojoName}(id) {
+    return request({
+        url: '/${secondModuleName}s/' + id,
+        method: 'get'
+    })
+}
+/**
+ * 通过主键删除实体
+ * @param {*} id 主键
+ */
+export function del${pojoName}(id) {
+    return request({
+        url: '/${secondModuleName}s/' + id,
+        method: 'delete'
+    })
+}
+/**
+ * 通过id更新实体
+ * @param {*} id 主键
+ * @param {*} obj 实体信息
+ */
+export function put${pojoName}(id, obj) {
+    return request({
+        url: '/${secondModuleName}s/' + id,
+        method: 'put',
+        data: obj
+    })
+}

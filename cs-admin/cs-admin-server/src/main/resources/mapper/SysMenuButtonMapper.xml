@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cs.springcloud.admin.server.mapper.SysMenuButtonMapper">
+
+    <resultMap type="com.cs.springcloud.admin.api.model.SysMenuButton" id="sysMenuButtonMap">
+        <result property="id" column="id"/>
+        <result property="menuId" column="menu_id"/>
+        <result property="buttonCode" column="button_code"/>
+        <result property="buttonTitle" column="button_title"/>
+        <result property="url" column="url"/>
+        <result property="method" column="method"/>
+        <result property="description" column="description"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="updateUserName" column="update_user_name"/>
+        <result property="tenantId" column="tenant_id"/>
+    </resultMap>
+
+    <select id="selectMenuCodeAndButCodeByButIds" resultType="com.cs.springcloud.admin.api.dto.MenuButtonCodeDTO">
+        SELECT
+        sm.menu_code menuCode,
+        smb.button_code buttonCode
+        FROM
+        sys_menu_button smb
+        LEFT JOIN sys_menu sm ON smb.menu_id = sm.id
+        <where>
+            sm.is_deleted = 0
+            AND smb.is_deleted = 0
+            <if test="menuButtonIds != null and menuButtonIds.size > 0">
+                AND smb.id IN
+                <foreach collection="menuButtonIds" item="menuButId" open="(" separator="," close=")">
+                    #{menuButId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

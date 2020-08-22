@@ -1,0 +1,244 @@
+<template>
+    <div class="app-container calendar-list-container">
+        <div class="filter-container">
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px" class="filter-item" placeholder="名称"
+                      v-model="listQuery.name"/>
+            <el-button class="filter-item" type="primary" icon="search" @click="handleFilter">搜索</el-button>
+            <el-button class="filter-item" style="margin-left: 10px" @click="handleCreate" type="primary" icon="edit">
+                添加
+            </el-button>
+        </div>
+        <el-table :data="listObj" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
+            #foreach($column in $columns)
+                #if($column.columnName == $pk.columnName)
+                    <el-table-column align="center" label="序号" type="index" width="65"/>
+                #else
+                    <el-table-column align="center" label="${column.comments}">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.${column.attrNameMin}}}</span>
+                        </template>
+                    </el-table-column>
+                #end
+            #end
+            <el-table-column fixed="right" align="center" label="操作" width="150">
+                <template slot-scope="scope">
+                    <el-button size="small" type="success" @click="handleUpdate(scope.row)">编辑</el-button>
+                    <el-button size="small" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div v-show="!listLoading" class="pagination-container">
+            <el-pagination
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :current-page.sync="listQuery.page"
+                    :page-sizes="[20,50,100, 150]"
+                    :page-size="listQuery.limit"
+                    :total="total"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+            />
+        </div>
+        <el-dialog width="35%" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+            <el-form ref="formTemp" :rules="rules" :model="formTemp" label-width="100px">
+                #foreach($column in $columns)
+                    #if($column.columnName != $pk.columnName)
+                        <el-form-item label="${column.comments}" prop="${column.attrNameMin}">
+                            <el-input v-model="formTemp.${column.attrNameMin}" placeholder="请输入${column.comments}"/>
+                        </el-form-item>
+                    #end
+                #end
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="cancel()">取 消</el-button>
+                <el-button v-if="dialogStatus=='create'" type="primary" @click="create()">确 定</el-button>
+                <el-button v-else type="primary" @click="update()">确 定</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+import {
+    add${pojoName},
+    del${pojoName},
+    get${pojoName},
+    ${secondModuleName}List,
+    put${pojoName}
+}from '@/api/${moduleName}/${secondModuleName}'
+
+export default {
+    data() {
+        return {
+            formTemp: {
+    #foreach($column in $columns)
+        #if($column.columnName != $pk.columnName)
+            ${column.attrNameMin} : undefined #if($velocityCount != $columns.size()),#end
+        #end
+    #end
+    },
+    rules: {
+#foreach($column in $columns)
+    #if($column.columnName != $pk.columnName)
+        ${column.attrNameMin}: [
+        {
+            required: true,
+            message: '请输入${column.comments}',
+            trigger: 'blur'
+        },
+        {
+            min: 1,
+            max: 128,
+            message: '长度在xx以内个字符',
+            trigger: 'blur'
+        }
+    ]#if($velocityCount != $columns.size()), #end#end
+#end
+    }
+    ,
+    // 列表对象集
+    listObj: null,
+    // 列表总数
+    total:null,
+    // 等待加载
+    listLoading:true,
+    // 列表查询条件
+    listQuery:
+    {
+        page: 1,
+        limit: 20,
+        name:undefined
+    }
+    ,
+    // 是否弹出（创建|更新）
+    dialogFormVisible: false,
+    // update|create
+    dialogStatus:'',
+    textMap:
+    {
+        // 表单title
+        update: '更新',
+        create:'创建'
+    }
+    }
+    },
+    // 初始化
+    created() {
+        this.getList()
+    },
+    methods: {
+        // 实体列表数据
+        getList() {
+            this.listLoading = true
+            ${secondModuleName}List(this.listQuery).then(response => {
+                this.listObj = response.data.rows
+                this.total = response.data.total
+                this.listLoading = false
+            })
+        },
+        // 列表查询
+        handleFilter() {
+            this.getList()
+        },
+        // pageSize(页码)改变时会触发
+        handleSizeChange(val) {
+            this.listQuery.limit = val
+            this.getList()
+        },
+        // currentPage(当前页) 改变时会触发
+        handleCurrentChange(val) {
+            this.listQuery.page = val
+            this.getList()
+        },
+        // 打开添加表单弹窗
+        handleCreate() {
+            this.resetFormTemp()
+            this.dialogStatus = 'create'
+            this.dialogFormVisible = true
+        },
+        // 获取详情，并打开更新表单弹窗
+        handleUpdate(row) {
+            get${pojoName}(row.id).then(response => {
+             this.formTemp = response.data
+             this.dialogFormVisible = true
+             this.dialogStatus = 'update'
+             })
+        },
+        // 打开删除确认弹窗
+        handleDelete(row) {
+            this.$confirm('此操作将数据删除, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                del${pojoName}(row.id).then(res => {
+                    if(res) {
+                        this.getList()
+                        this.$notify({
+                            title: '成功',
+                            message: '删除成功',
+                            type: 'success',
+                            duration: 2000
+                        })
+                    }
+                }
+               )
+            })
+        },
+        // 创建新实体
+        create() {
+            add${pojoName}(this.formTemp).then(res => {
+                if(res) {
+                    this.dialogFormVisible = false
+                    this.getList()
+                    this.$notify({
+                        title: '成功',
+                        message: '创建成功',
+                        type: 'success',
+                        duration: 2000
+                    })
+                }
+            }
+        )
+        },
+        // 取消编辑表单
+        cancel(formName) {
+            this.dialogFormVisible = false
+        },
+        // 更新实体
+        update(formName) {
+            this.$confirm('此操作将数据更新, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.dialogFormVisible = false
+            put${pojoName}(this.formTemp.id, this.formTemp).then(res => {
+                if(res) {
+                    this.dialogFormVisible = false
+                    this.getList()
+                    this.$notify({
+                        title: '更新',
+                        message: '更新成功',
+                        type: 'success',
+                        duration: 2000
+                    })
+                }
+            }
+        )
+        })
+        },
+        // 初始化表单字段
+        resetFormTemp() {
+    #foreach($column in $columns)
+     this.formTemp.${column.attrNameMin} = undefined
+    #end
+        }
+    }
+}
+</script>
+
+<style scoped>
+    .filter-container {
+        margin-bottom: 15px
+    }
+</style>

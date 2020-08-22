@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>代码生成器</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/layui.css" media="all"/>
+    <link rel="stylesheet" href="css/bootstrap-table.min.css"/>
+</head>
+
+<body>
+<div class="admin-main">
+    <div style="height: 15px;"></div>
+    <form class="layui-form layui-form-pane" onsubmit="javascript:return false;">
+        <div class="layui-form-item" style="margin-bottom:0px;">
+            <label class="layui-form-label">表名</label>
+            <div class="layui-input-inline">
+                <input type="text" onchange="javascript:$('#btn_query').click();" class="layui-input" id="name">
+            </div>
+            <button class="layui-btn" id="btn_query">
+                查询
+            </button>
+
+            <button class="layui-btn" id="btn_generate">
+                <i class="layui-icon">&#xe654;</i>生成代码
+            </button>
+
+
+        </div>
+    </form>
+
+    <table id="generatorTable">
+
+    </table>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-table.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/layui.js"></script>
+<script type="text/javascript" src="js/generator.js"></script>
+</body>
+
+</html>

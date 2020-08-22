@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: cs-admin
+  cloud:
+    nacos:
+      config:
+        # 配置为yaml时，必须添加此项配置
+        file-extension: yaml
+        server-addr: localhost:8761
+      discovery:
+        server-addr: localhost:8761
+        service: cs-admin
