@@ -33,20 +33,21 @@ npm run dev
 npm run build:prod
 ```
 
-## 四、VSCode环境配置（可选）
-#### 4.1 Vetur格式化配置
+## 四、VSCode环境配置
+[Vetur配置详细案例参考](https://blog.csdn.net/cs4380/article/details/107752503)
+#### 4.1 Vetur格式化配置项
 ```
 {
-    "vetur.format.defaultFormatterOptions": {
-        "prettier": {
-            // 不加分号
-            "semi": false,
-            // 用单引号
-            "singleQuote": true,
-            // 禁止随时添加逗号
-            "trailingComma": "none"
-        }
+  "vetur.format.defaultFormatterOptions": {
+    "prettier": {
+      // 不加分号
+      "semi": false,
+      // 用单引号
+      "singleQuote": true,
+      // 禁止随时添加逗号
+      "trailingComma": "none"
     }
+  }
 }
 ```
 #### 4.2 editorConfig

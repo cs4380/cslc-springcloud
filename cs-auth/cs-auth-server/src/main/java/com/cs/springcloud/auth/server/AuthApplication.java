@@ -16,6 +16,7 @@
 package com.cs.springcloud.auth.server;
 
 import com.cs.springcloud.base.common.annotation.EnableSwaggerConfig;
+import com.cs.springcloud.base.common.annotation.JacksonDateTimeSerializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -33,6 +34,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 // 开启认证服务器
 @EnableAuthorizationServer
 @EnableDiscoveryClient
+// 配置日期格式化
+@JacksonDateTimeSerializer
 // 启用Feign
 @EnableFeignClients
 @SpringBootApplication(scanBasePackages = {"com.cs.springcloud.admin.api", "com.cs.springcloud.auth.server"})

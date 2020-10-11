@@ -1,5 +1,5 @@
 -- nacos服务相关表
-    -- TODO 本项目采用nacos1.2.0版本, 如果升级可到官网下载对应版本sql脚本,把config_info表中的数据迁移过去即可
+-- 本项目采用nacos1.3.1版本, 如果升级可到官网下载对应版本sql脚本,把config_info表中的数据迁移过去即可
 
 -- 创建数据库
 create DATABASE cs_nacos DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;

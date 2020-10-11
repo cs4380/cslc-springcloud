@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      title: 'CSLC单体权限系统',
+      title: 'CSLC-CLOUD',
       logo: require('../../../../static/default/logo.png')
     }
   }

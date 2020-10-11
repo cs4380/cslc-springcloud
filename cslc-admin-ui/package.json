@@ -1,7 +1,7 @@
 {
-  "name": "CS-Admin-UI",
+  "name": "cs-admin-ui",
   "version": "1.0.0",
-  "description": "CS-Admin-UI",
+  "description": "cs-admin-ui",
   "author": "cs4380 <cs4380@163.com>",
   "license": "MIT",
   "scripts": {

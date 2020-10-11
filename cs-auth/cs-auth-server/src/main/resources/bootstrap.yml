@@ -13,11 +13,11 @@ spring:
         # 配置为yaml时，必须添加此项配置
         file-extension: yaml
         # 配置中心地址
-        server-addr: localhost:8761
+        server-addr: ${NACOS_SERVER_ADDR:localhost}:${NACOS_SERVER_PORT:8848}
       # 注册服务
       discovery:
         # 注册中心地址
-        server-addr: localhost:8761
+        server-addr: ${NACOS_SERVER_ADDR:localhost}:${NACOS_SERVER_PORT:8848}
         # 注册服务标识
         service: cs-auth
         # 本机地址

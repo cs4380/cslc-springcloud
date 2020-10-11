@@ -1,7 +1,7 @@
 -- admin服务相关表
 
 -- 创建数据库
-create DATABASE cs_admin DEFAULT ;
+create DATABASE cs_admin DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 Use cs_admin;
 
 -- ----------------------------
@@ -13,6 +13,7 @@ CREATE TABLE `base_user` (
   `password` varchar(256) NOT NULL COMMENT '用户密码',
   `name` varchar(128) DEFAULT NULL COMMENT '用户姓名',
   `user_sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '用户性别（0男|1女）',
+  `portrait` varchar(256) DEFAULT NULL COMMENT '用户头像',
   `birthday` datetime DEFAULT NULL COMMENT '用户生日',
   `address` varchar(256) DEFAULT NULL COMMENT '用户地址',
   `mobile_phone` varchar(16) DEFAULT NULL COMMENT '用户手机号',
@@ -149,6 +150,7 @@ CREATE TABLE `sys_role_authorization` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `role_code` varchar(128) NOT NULL COMMENT '角色编码',
   `resource_id` varchar(64) NOT NULL COMMENT '资源id',
+  `menu_code` varchar(128) NOT NULL COMMENT '菜单编码',
   `resource_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '资源类型（0菜单|1按钮）',
   `tenant_id` varchar(36) DEFAULT NULL COMMENT '租户Id',
   PRIMARY KEY (`id`)
